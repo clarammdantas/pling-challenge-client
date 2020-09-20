@@ -1,5 +1,7 @@
 export default function Home() {
     return (
-        <div className='h1'></div>
+        <div className='content-container'>
+            <div className='main-content'></div>
+        </div>
     )
 }
