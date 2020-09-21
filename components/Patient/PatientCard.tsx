@@ -48,13 +48,11 @@ const PatientCard: React.FC<PatientType> = ({ patient, key }) => {
                     <FontAwesomeIcon
                         icon={faEdit}
                         size='2x'
-                        color='black'
                         className={styles.edit_button}
                     />
                     <FontAwesomeIcon
                         icon={faTrash}
                         size='2x'
-                        color='black'
                         className={styles.delete_button}
                     />
                 </div>

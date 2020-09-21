@@ -1,10 +1,14 @@
+// Components
 import PatientListComponent from '../components/Patient/PatientList'
+import PatientListMenu from '../components/Patient/PatientListMenu'
+
 import { GetStaticProps } from 'next'
 
 export default function Home({patients}) {
     return (
         <div className='content-container'>
             <div className='main-content'>
+                <PatientListMenu />
                 <PatientListComponent patients={patients}/>
             </div>
         </div>
