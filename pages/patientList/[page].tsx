@@ -9,7 +9,7 @@ import  Patient from '../../types/types'
 import styles from './patient.module.scss'
 
 // Components
-import PatientCard from './PatientCard'
+import PatientCard from '../../components/patient/PatientCard'
 import PatientListMenu from './PatientListMenu'
 
 interface PatientListPage {
