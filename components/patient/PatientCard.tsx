@@ -12,20 +12,20 @@ import styles from './patient.module.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrash, faEdit } from '@fortawesome/free-solid-svg-icons'
 
-type funcSetCurrentPatient = (patient: Patient) => void;
+type ToggleModal = (patient?: Patient) => void;
 
 interface PatientCardProps {
     patient: Patient,
     page: number,
     key: string,
-    setCurrPatient: funcSetCurrentPatient
+    toggleEditModal: ToggleModal
 }
 
 const PatientCard: React.FC<PatientCardProps> = ({
     patient,
     key,
     page,
-    setCurrPatient
+    toggleEditModal
 }) => {
     const deletePatient = async () => {
         await fetch(process.env.baseURL + '/patient/delete/' + patient._id, {
@@ -33,8 +33,8 @@ const PatientCard: React.FC<PatientCardProps> = ({
         });
     }
 
-    const editPatient = () => {
-        setCurrPatient(patient);
+    const setModal = () => {
+        toggleEditModal(patient);
     }
 
     return(
@@ -65,12 +65,14 @@ const PatientCard: React.FC<PatientCardProps> = ({
             </div>
 
             <div className={styles.patient_records}>
-                <div className={styles.patient_actions} onClick={editPatient}>
-                    <FontAwesomeIcon
-                        icon={faEdit}
-                        size='2x'
-                        className={styles.edit_button}
-                    />
+                <div className={styles.patient_actions}>
+                    <div onClick={setModal}>
+                        <FontAwesomeIcon
+                            icon={faEdit}
+                            size='2x'
+                            className={styles.edit_button}
+                        />
+                    </div>
                     <div onClick={deletePatient}>
                         <Link href={`/patientList/${page}.tsx`}>
                             <FontAwesomeIcon

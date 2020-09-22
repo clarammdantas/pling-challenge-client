@@ -1,5 +1,4 @@
 import React from 'react'
-import axios from 'axios'
 
 // Types
 import Patient, { PatientUpdate, AddressUpdate } from '../../types/types'
@@ -9,7 +8,7 @@ import styles from './modal.module.scss'
 
 import fetch from 'isomorphic-unfetch'
 
-type ToggleModal = () => void;
+type ToggleModal = (patient?: Patient) => void;
 
 type ModalState = {
     patient: PatientUpdate,
@@ -17,11 +16,11 @@ type ModalState = {
 }
 
 interface ModalProps {
-    patientToUpdate: Patient,
+    patient: Patient,
     closeModal: ToggleModal
 }
 
-class EditPatientModal extends React.Component<{closeModal: ToggleModal, patientToUpdate: Patient}, ModalState> {
+class EditPatientModal extends React.Component<{closeModal: ToggleModal, patient: Patient}, ModalState> {
     constructor(props: ModalProps) {
         super(props);
         this.state = {
@@ -54,7 +53,7 @@ class EditPatientModal extends React.Component<{closeModal: ToggleModal, patient
     async handleSubmit(event) {
         event.preventDefault();
         if (this.state.address !== {}) {
-            const addressId = this.props.patientToUpdate.address._id;
+            const addressId = this.props.patient.address._id;
             await fetch(process.env.baseURL + '/address/update/' + addressId, {
                 method: 'PATCH',
                 headers: {
@@ -63,7 +62,7 @@ class EditPatientModal extends React.Component<{closeModal: ToggleModal, patient
                 body: JSON.stringify(this.state.address)
             })
         } if (this.state.patient !== {}) {
-            const patientId = this.props.patientToUpdate._id;
+            const patientId = this.props.patient._id;
             await fetch(process.env.baseURL + '/patient/edit/' + patientId, {
                 method: 'PATCH',
                 headers: {

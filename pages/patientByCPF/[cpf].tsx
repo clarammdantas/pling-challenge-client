@@ -10,6 +10,9 @@ import styles from '../../components/patient/patient.module.scss'
 
 // Types
 import  Patient from '../../types/types'
+import EditPatientModal from '../../components/patient/EditPatientModal'
+import PatientModal from '../../components/patient/PatientModal'
+import Router from 'next/router'
 
 
 interface PatientByCPFPage {
@@ -19,6 +22,8 @@ interface PatientByCPFPage {
 const PatientByCPF: NextPage<PatientByCPFPage> = ({patient}) => {
     const [page, setPage] = useState<number>(1);
     const [isModalOpen, setOpenModal] = useState<boolean>(false);
+    const [isEditModalOpen, setEditModal] = useState<boolean>(false);
+    const [currentPatient, setCurrentPatient] = useState<Patient>({} as Patient);
 
     const handlePageChangeLeft = () => {
         setPage(1);
@@ -31,6 +36,24 @@ const PatientByCPF: NextPage<PatientByCPFPage> = ({patient}) => {
     const toggleModal = () => {
         setOpenModal(!isModalOpen);
     }
+
+    const toggleModalEdit = () => {
+        if (isEditModalOpen) {
+            Router.reload();
+        }
+        setEditModal(!isEditModalOpen);
+    }
+
+    const setCurrPatient = (patient: Patient) => {
+        setCurrentPatient(patient);
+        toggleModalEdit();
+    }
+
+    const editPatientForm = <EditPatientModal
+                                closeModal={toggleModalEdit}
+                                patient={currentPatient}
+                              />
+
     return (
         <div className='content-container'>
             <div className='main-content'>
@@ -41,8 +64,18 @@ const PatientByCPF: NextPage<PatientByCPFPage> = ({patient}) => {
                     showModal={toggleModal}
                 />
                 <div className={styles.patient_list}>
-                    <PatientCard patient={patient} key={patient.id} />
+                    <PatientCard
+                        patient={patient}
+                        key={patient._id}
+                        page={page}
+                        toggleEditModal={setCurrPatient}
+                    />
                 </div>
+                <PatientModal
+                    isModalOpen={isEditModalOpen}
+                    closeModal={toggleModalEdit}
+                    children={editPatientForm}
+                />
             </div>
         </div>
     )

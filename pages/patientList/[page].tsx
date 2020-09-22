@@ -2,6 +2,7 @@
 // patients.
 
 import React, { useState } from 'react'
+import Router from 'next/router'
 import { NextPage, NextPageContext } from 'next'
 import fetch from 'isomorphic-unfetch'
 
@@ -46,19 +47,20 @@ const PatientListComponent: NextPage<PatientListPage> = ({patients, nextPage, to
         setOpenModal(!isModalOpen);
     }
 
-    const toggleModalEdit = () => {
+    const toggleModalEdit = (patient?: Patient) => {
+        if (isEditModalOpen) {
+            Router.reload();
+        }
+        if (patient) {
+            setCurrentPatient(patient);
+        }
         setEditModal(!isEditModalOpen);
-    }
-
-    const setCurrPatient = (patient: Patient) => {
-        setCurrentPatient(patient);
-        toggleModalEdit();
     }
 
     const createPatientForm = <CreatePatientModal closeModal={toggleModal} />
     const editPatientForm = <EditPatientModal
                                 closeModal={toggleModalEdit}
-                                patientToUpdate={currentPatient}
+                                patient={currentPatient}
                               />
 
     return (
@@ -78,7 +80,7 @@ const PatientListComponent: NextPage<PatientListPage> = ({patients, nextPage, to
                                 patient={patient}
                                 key={patient._id}
                                 page={page}
-                                setCurrPatient={setCurrPatient}
+                                toggleEditModal={toggleModalEdit}
                             />
                         )
                     })}
