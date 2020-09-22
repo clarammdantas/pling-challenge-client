@@ -11,14 +11,18 @@ import styles from './patient.module.scss'
 // Components
 import PatientCard from '../../components/patient/PatientCard'
 import PatientListMenu from './PatientListMenu'
+import NewPatientModal from '../../components/patient/PatientModal'
+import CreatePatientModal from '../../components/patient/CreatePatientModal'
 
 interface PatientListPage {
     patients: Array<Patient>
     nextPage: number
+    totalPages?: number
 }
 
-const PatientListComponent: NextPage<PatientListPage> = ({patients, nextPage}) => {
+const PatientListComponent: NextPage<PatientListPage> = ({patients, nextPage, totalPages}) => {
     const [page, setPage] = useState<number>(nextPage);
+    const [isModalOpen, setOpenModal] = useState<boolean>(false);
 
     const handlePageChangeLeft = async () => {
         if (page - 1 > 0) {
@@ -27,10 +31,16 @@ const PatientListComponent: NextPage<PatientListPage> = ({patients, nextPage}) =
     }
 
     const handlePageChangeRight = async () => {
-        if (page + 1 < 3) {
+        if (page + 1 <= totalPages) {
             setPage(page + 1);
         }
     }
+
+    const toggleModal = () => {
+        setOpenModal(!isModalOpen);
+    }
+
+    const createPatientForm = <CreatePatientModal />
 
     return (
         <div className='content-container'>
@@ -39,12 +49,18 @@ const PatientListComponent: NextPage<PatientListPage> = ({patients, nextPage}) =
                     changePageLeft={handlePageChangeLeft}
                     changePageRight={handlePageChangeRight}
                     page={page}
+                    showModal={toggleModal}
                 />
                 <div className={styles.patient_list}>
                     {patients.map((patient) => {
                         return <PatientCard patient={patient} key={patient.id} />
                     })}
                 </div>
+                <NewPatientModal
+                    isModalOpen={isModalOpen}
+                    closeModal={toggleModal}
+                    children={createPatientForm}
+                />
             </div>
         </div>
     )
@@ -58,10 +74,14 @@ export const getServerSideProps = async (context: NextPageContext) => {
     });
     const patients = await res.json();
 
+    const totalPagesReq = await fetch(process.env.baseURL + '/patient/getTotalPages')
+    const totalPages = await totalPagesReq.json();
+
     return {
         props: {
             patients: patients,
-            nextPage: parseInt(page)
+            nextPage: parseInt(page),
+            totalPages: totalPages.total_pages
         },
     }
 }

@@ -14,14 +14,21 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 
 type ChangePageFunction = (e: MouseEvent) => void;
+type ToggleModal = () => void;
 
 interface Props {
-    changePageLeft?: ChangePageFunction,
-    changePageRight?: ChangePageFunction,
-    page?: number
+    changePageLeft: ChangePageFunction,
+    changePageRight: ChangePageFunction,
+    page: number,
+    showModal: ToggleModal
 }
 
-const PatientListMenu: React.FC<Props> = ({ changePageLeft, changePageRight, page }) => {
+const PatientListMenu: React.FC<Props> = ({
+    changePageLeft,
+    changePageRight,
+    page,
+    showModal
+}) => {
     return (
         <div className={styles.patient_list_menu_container}>
             <div className={styles.patient_list_menu}>
@@ -34,13 +41,15 @@ const PatientListMenu: React.FC<Props> = ({ changePageLeft, changePageRight, pag
                     <input placeholder='CPF' className={styles.search_field} />
                 </div>
                 <div className={styles.menu_actions_container}>
-                    <FontAwesomeIcon
-                        icon={faPlusSquare}
-                        size='3x'
-                        className={styles.create_button}
-                    />
+                    <div onClick={showModal}>
+                        <FontAwesomeIcon
+                            icon={faPlusSquare}
+                            size='3x'
+                            className={styles.create_button}
+                        />
+                    </div>
                     <div className={styles.change_pages}>
-                        <div onClick={changePageLeft}>
+                        <div className={styles.change_button_focus} onClick={changePageLeft}>
                             <Link href={`/patientList/${page}.tsx`}>
                                 <FontAwesomeIcon
                                     icon={faArrowCircleLeft}
@@ -49,7 +58,7 @@ const PatientListMenu: React.FC<Props> = ({ changePageLeft, changePageRight, pag
                                 />
                             </Link>
                         </div>
-                        <div onClick={changePageRight}>
+                        <div className={styles.change_button_focus} onClick={changePageRight}>
                             <Link href={`/patientList/${page}.tsx`}>
                                 <FontAwesomeIcon
                                     icon={faArrowCircleRight}
