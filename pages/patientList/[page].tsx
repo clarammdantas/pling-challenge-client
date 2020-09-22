@@ -14,8 +14,9 @@ import styles from '../../components/patient/patient.module.scss'
 // Components
 import PatientCard from '../../components/patient/PatientCard'
 import PatientListMenu from './PatientListMenu'
-import NewPatientModal from '../../components/patient/PatientModal'
+import PatientModal from '../../components/patient/PatientModal'
 import CreatePatientModal from '../../components/patient/CreatePatientModal'
+import EditPatientModal from '../../components/patient/EditPatientModal'
 
 interface PatientListPage {
     patients: Array<Patient>
@@ -26,6 +27,8 @@ interface PatientListPage {
 const PatientListComponent: NextPage<PatientListPage> = ({patients, nextPage, totalPages}) => {
     const [page, setPage] = useState<number>(nextPage);
     const [isModalOpen, setOpenModal] = useState<boolean>(false);
+    const [isEditModalOpen, setEditModal] = useState<boolean>(false);
+    const [currentPatient, setCurrentPatient] = useState<Patient>({} as Patient);
 
     const handlePageChangeLeft = () => {
         if (page - 1 > 0) {
@@ -43,7 +46,20 @@ const PatientListComponent: NextPage<PatientListPage> = ({patients, nextPage, to
         setOpenModal(!isModalOpen);
     }
 
+    const toggleModalEdit = () => {
+        setEditModal(!isEditModalOpen);
+    }
+
+    const setCurrPatient = (patient: Patient) => {
+        setCurrentPatient(patient);
+        toggleModalEdit();
+    }
+
     const createPatientForm = <CreatePatientModal closeModal={toggleModal} />
+    const editPatientForm = <EditPatientModal
+                                closeModal={toggleModalEdit}
+                                patientToUpdate={currentPatient}
+                              />
 
     return (
         <div className='content-container'>
@@ -56,17 +72,26 @@ const PatientListComponent: NextPage<PatientListPage> = ({patients, nextPage, to
                 />
                 <div className={styles.patient_list}>
                     {patients.map((patient) => {
-                        return <PatientCard
-                                    patient={patient}
-                                    key={patient._id}
-                                    page={page}
-                                />
+
+                        return (
+                            <PatientCard
+                                patient={patient}
+                                key={patient._id}
+                                page={page}
+                                setCurrPatient={setCurrPatient}
+                            />
+                        )
                     })}
                 </div>
-                <NewPatientModal
+                <PatientModal
                     isModalOpen={isModalOpen}
                     closeModal={toggleModal}
                     children={createPatientForm}
+                />
+                <PatientModal
+                    isModalOpen={isEditModalOpen}
+                    closeModal={toggleModalEdit}
+                    children={editPatientForm}
                 />
             </div>
         </div>

@@ -13,7 +13,7 @@ interface ModalProps {
     closeModal: ToggleModal
 }
 
-const NewPatientModal: React.FC<ModalProps> = ({
+const PatientModal: React.FC<ModalProps> = ({
     children,
     isModalOpen,
     closeModal
@@ -39,4 +39,4 @@ const NewPatientModal: React.FC<ModalProps> = ({
     )
 }
 
-export default NewPatientModal;
+export default PatientModal;

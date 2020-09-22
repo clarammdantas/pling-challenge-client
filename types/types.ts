@@ -1,5 +1,5 @@
 interface Address {
-    id: string,
+    _id: string,
     street: string,
     district: string,
     zipCode: string,
@@ -27,6 +27,23 @@ interface Patient {
     profession: string,
     cellNumber: string,
     records: PatientRecord
+}
+
+export interface PatientUpdate {
+    name?: string,
+    age?: number,
+    cpf?: string,
+    sex?: number,
+    profession?: string,
+    cellNumber?: string,
+}
+
+export interface AddressUpdate {
+    street?: string,
+    district?: string,
+    zipCode?: string,
+    number?: number,
+    complement?: string
 }
 
 export default Patient;

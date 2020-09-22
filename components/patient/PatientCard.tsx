@@ -12,17 +12,29 @@ import styles from './patient.module.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrash, faEdit } from '@fortawesome/free-solid-svg-icons'
 
-interface PatientType {
+type funcSetCurrentPatient = (patient: Patient) => void;
+
+interface PatientCardProps {
     patient: Patient,
     page: number,
-    key: string
+    key: string,
+    setCurrPatient: funcSetCurrentPatient
 }
 
-const PatientCard: React.FC<PatientType> = ({ patient, key, page }) => {
+const PatientCard: React.FC<PatientCardProps> = ({
+    patient,
+    key,
+    page,
+    setCurrPatient
+}) => {
     const deletePatient = async () => {
         await fetch(process.env.baseURL + '/patient/delete/' + patient._id, {
             method: 'DELETE'
         });
+    }
+
+    const editPatient = () => {
+        setCurrPatient(patient);
     }
 
     return(
@@ -53,7 +65,7 @@ const PatientCard: React.FC<PatientType> = ({ patient, key, page }) => {
             </div>
 
             <div className={styles.patient_records}>
-                <div className={styles.patient_actions}>
+                <div className={styles.patient_actions} onClick={editPatient}>
                     <FontAwesomeIcon
                         icon={faEdit}
                         size='2x'
