@@ -15,9 +15,9 @@ import styles from '../../components/patient/patient.module.scss'
 // Components
 import PatientCard from '../../components/patient/PatientCard'
 import PatientListMenu from './PatientListMenu'
-import PatientModal from '../../components/patient/PatientModal'
-import CreatePatientModal from '../../components/patient/CreatePatientModal'
-import EditPatientModal from '../../components/patient/EditPatientModal'
+import PatientModal from '../../components/patientModals/PatientModal'
+import CreatePatientForm from '../../components/patientModals/CreatePatientForm'
+import EditPatientForm from '../../components/patientModals/EditPatientForm'
 
 interface PatientListPage {
     patients: Array<Patient>
@@ -57,8 +57,8 @@ const PatientListComponent: NextPage<PatientListPage> = ({patients, nextPage, to
         setEditModal(!isEditModalOpen);
     }
 
-    const createPatientForm = <CreatePatientModal closeModal={toggleModal} />
-    const editPatientForm = <EditPatientModal
+    const createPatientForm = <CreatePatientForm closeModal={toggleModal} />
+    const editPatientForm = <EditPatientForm
                                 closeModal={toggleModalEdit}
                                 patient={currentPatient}
                               />

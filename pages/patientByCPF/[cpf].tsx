@@ -10,8 +10,8 @@ import styles from '../../components/patient/patient.module.scss'
 
 // Types
 import  Patient from '../../types/types'
-import EditPatientModal from '../../components/patient/EditPatientModal'
-import PatientModal from '../../components/patient/PatientModal'
+import EditPatientForm from '../../components/patientModals/EditPatientForm'
+import PatientModal from '../../components/patientModals/PatientModal'
 import Router from 'next/router'
 
 
@@ -49,7 +49,7 @@ const PatientByCPF: NextPage<PatientByCPFPage> = ({patient}) => {
         toggleModalEdit();
     }
 
-    const editPatientForm = <EditPatientModal
+    const editPatientForm = <EditPatientForm
                                 closeModal={toggleModalEdit}
                                 patient={currentPatient}
                               />

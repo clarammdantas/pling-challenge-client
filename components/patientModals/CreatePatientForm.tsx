@@ -1,31 +1,30 @@
 import React from 'react'
 
 // Types
-import Patient, { PatientUpdate, AddressUpdate } from '../../types/types'
+import Patient from '../../types/types'
 
 // Styles
 import styles from './modal.module.scss'
 
 import fetch from 'isomorphic-unfetch'
 
-type ToggleModal = (patient?: Patient) => void;
+type ToggleModal = () => void;
 
 type ModalState = {
-    patient: PatientUpdate,
-    address: AddressUpdate
+    patient: Patient,
 }
 
 interface ModalProps {
-    patient: Patient,
     closeModal: ToggleModal
 }
 
-class EditPatientModal extends React.Component<{closeModal: ToggleModal, patient: Patient}, ModalState> {
+class CreatePatientForm extends React.Component<{closeModal}, ModalState> {
     constructor(props: ModalProps) {
         super(props);
         this.state = {
-            patient: {} as PatientUpdate,
-            address: {} as AddressUpdate
+            patient: {
+                address: {}
+            } as Patient
         }
 
         this.handleChange = this.handleChange.bind(this);
@@ -37,48 +36,33 @@ class EditPatientModal extends React.Component<{closeModal: ToggleModal, patient
         let fieldName = event.target.name;
         const isPatientAtt = /address*/
 
-        const prevStatePatient = {...this.state.patient};
-        const prevStateAddress = {...this.state.address};
+        const prevState = {...this.state.patient};
 
         if (!isPatientAtt.test(fieldName)) {
-            prevStatePatient[fieldName] = value;
-            this.setState({patient: prevStatePatient})
+            prevState[fieldName] = value;
+            this.setState({patient: prevState})
         } else {
             fieldName = fieldName.split('_')[1];
-            prevStateAddress[fieldName] = value;
-            this.setState({address: prevStateAddress})
+            prevState['address'][fieldName] = value;
+            this.setState({patient: prevState})
         }
     }
 
     async handleSubmit(event) {
         event.preventDefault();
-        if (this.state.address !== {}) {
-            const addressId = this.props.patient.address._id;
-            await fetch(process.env.baseURL + '/address/update/' + addressId, {
-                method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(this.state.address)
-            })
-        } if (this.state.patient !== {}) {
-            const patientId = this.props.patient._id;
-            await fetch(process.env.baseURL + '/patient/edit/' + patientId, {
-                method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(this.state.patient)
-            });
-        }
-
-        this.props.closeModal();
+        fetch(process.env.baseURL + '/patient/create', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(this.state.patient)
+        }).then(this.props.closeModal);
     }
 
     render() {
         return (
             <div className={styles.create_form_container}>
-                <h2>Editar Paciente</h2>
+                <h2>Novo Paciente</h2>
                 <form onSubmit={this.handleSubmit}>
                     <div className={styles.create_form}>
                         <label>
@@ -114,23 +98,23 @@ class EditPatientModal extends React.Component<{closeModal: ToggleModal, patient
                         <h4>Endereço</h4>
                         <label>
                             Rua:
-                            <input onChange={this.handleChange} type='text' name='address_street' value={this.state.address.street} />
+                            <input onChange={this.handleChange} type='text' name='address_street' value={this.state.patient.address.street} />
                         </label>
                         <label>
                             Número:
-                            <input onChange={this.handleChange} type='number' name='address_number' value={this.state.address.number} />
+                            <input onChange={this.handleChange} type='number' name='address_number' value={this.state.patient.address.number} />
                         </label>
                         <label>
                             Bairro:
-                            <input onChange={this.handleChange} type='text' name='address_district' value={this.state.address.district} />
+                            <input onChange={this.handleChange} type='text' name='address_district' value={this.state.patient.address.district} />
                         </label>
                         <label>
                             Cep:
-                            <input onChange={this.handleChange} type='text' name='address_zipCode' value={this.state.address.zipCode} />
+                            <input onChange={this.handleChange} type='text' name='address_zipCode' value={this.state.patient.address.zipCode} />
                         </label>
                         <label>
                             Complemento:
-                            <input onChange={this.handleChange} type='text' name='address_complement' value={this.state.address.complement} />
+                            <input onChange={this.handleChange} type='text' name='address_complement' value={this.state.patient.address.complement} />
                         </label>
                         <input type='submit' value='Submit' />
                     </div>
@@ -140,4 +124,4 @@ class EditPatientModal extends React.Component<{closeModal: ToggleModal, patient
     }
 }
 
-export default EditPatientModal;
+export default CreatePatientForm;
