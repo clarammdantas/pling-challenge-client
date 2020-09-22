@@ -81,7 +81,15 @@
         margin-left: 1rem;
     }
 
+    .delete_button:hover {
+        cursor: pointer;
+    }
+
     .edit_button {
         color: #0fd992;
+    }
+
+    .edit_button:hover {
+        cursor: pointer;
     }
 }

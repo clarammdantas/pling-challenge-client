@@ -52,8 +52,16 @@
         margin-left: 1rem;
     }
 
+    .change_page_button:hover {
+        cursor: pointer;
+    }
+
     .create_button {
         color: #55a2ff;
         font-size: 25px;
+    }
+
+    .create_button {
+        cursor: pointer;
     }
 }
