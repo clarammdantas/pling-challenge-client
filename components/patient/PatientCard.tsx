@@ -1,4 +1,6 @@
 import React from 'react'
+import Link from 'next/link'
+import fetch from 'isomorphic-unfetch'
 
 // Types
 import Patient from '../../types/types'
@@ -12,10 +14,17 @@ import { faTrash, faEdit } from '@fortawesome/free-solid-svg-icons'
 
 interface PatientType {
     patient: Patient,
+    page: number,
     key: string
 }
 
-const PatientCard: React.FC<PatientType> = ({ patient, key }) => {
+const PatientCard: React.FC<PatientType> = ({ patient, key, page }) => {
+    const deletePatient = async () => {
+        await fetch(process.env.baseURL + '/patient/delete/' + patient._id, {
+            method: 'DELETE'
+        });
+    }
+
     return(
         <div key={key} className={styles.patient_card}>
             <div className={styles.patient_avatar}>
@@ -50,11 +59,15 @@ const PatientCard: React.FC<PatientType> = ({ patient, key }) => {
                         size='2x'
                         className={styles.edit_button}
                     />
-                    <FontAwesomeIcon
-                        icon={faTrash}
-                        size='2x'
-                        className={styles.delete_button}
-                    />
+                    <div onClick={deletePatient}>
+                        <Link href={`/patientList/${page}.tsx`}>
+                            <FontAwesomeIcon
+                                icon={faTrash}
+                                size='2x'
+                                className={styles.delete_button}
+                            />
+                        </Link>
+                    </div>
                 </div>
                 <a href=''>Ver fichas</a>
             </div>

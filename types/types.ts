@@ -18,7 +18,7 @@ interface PatientRecord {
 }
 
 interface Patient {
-    id: string,
+    _id: string,
     name: string,
     address: Address,
     age: number,

@@ -56,7 +56,11 @@ const PatientListComponent: NextPage<PatientListPage> = ({patients, nextPage, to
                 />
                 <div className={styles.patient_list}>
                     {patients.map((patient) => {
-                        return <PatientCard patient={patient} key={patient.id} />
+                        return <PatientCard
+                                    patient={patient}
+                                    key={patient._id}
+                                    page={page}
+                                />
                     })}
                 </div>
                 <NewPatientModal
