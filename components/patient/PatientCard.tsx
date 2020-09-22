@@ -1,4 +1,5 @@
 import React from 'react'
+import Router from 'next/router'
 import Link from 'next/link'
 import fetch from 'isomorphic-unfetch'
 
@@ -31,6 +32,8 @@ const PatientCard: React.FC<PatientCardProps> = ({
         await fetch(process.env.baseURL + '/patient/delete/' + patient._id, {
             method: 'DELETE'
         });
+
+        Router.reload();
     }
 
     const setModal = () => {
