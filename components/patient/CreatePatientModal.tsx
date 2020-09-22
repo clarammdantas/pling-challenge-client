@@ -8,12 +8,18 @@ import styles from './modal.module.scss'
 
 import fetch from 'isomorphic-unfetch'
 
+type ToggleModal = () => void;
+
 type ModalState = {
-    patient: Patient
+    patient: Patient,
 }
 
-class CreatePatientModal extends React.Component<{}, ModalState> {
-    constructor(props: ModalState) {
+interface ModalProps {
+    closeModal: ToggleModal
+}
+
+class CreatePatientModal extends React.Component<{closeModal}, ModalState> {
+    constructor(props: ModalProps) {
         super(props);
         this.state = {
             patient: {
@@ -42,7 +48,7 @@ class CreatePatientModal extends React.Component<{}, ModalState> {
         }
     }
 
-    handleSubmit(event) {
+    async handleSubmit(event) {
         event.preventDefault();
         fetch(process.env.baseURL + '/patient/create', {
             method: 'POST',
@@ -50,7 +56,7 @@ class CreatePatientModal extends React.Component<{}, ModalState> {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(this.state.patient)
-        }).then(res => console.log("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$", res))
+        }).then(this.props.closeModal);
     }
 
     render() {

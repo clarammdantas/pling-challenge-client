@@ -1,3 +1,6 @@
+// In this function component, we list all the registered
+// patients.
+
 import React, { useState } from 'react'
 import { NextPage, NextPageContext } from 'next'
 import fetch from 'isomorphic-unfetch'
@@ -6,7 +9,7 @@ import fetch from 'isomorphic-unfetch'
 import  Patient from '../../types/types'
 
 // Styles
-import styles from './patient.module.scss'
+import styles from '../../components/patient/patient.module.scss'
 
 // Components
 import PatientCard from '../../components/patient/PatientCard'
@@ -24,13 +27,13 @@ const PatientListComponent: NextPage<PatientListPage> = ({patients, nextPage, to
     const [page, setPage] = useState<number>(nextPage);
     const [isModalOpen, setOpenModal] = useState<boolean>(false);
 
-    const handlePageChangeLeft = async () => {
+    const handlePageChangeLeft = () => {
         if (page - 1 > 0) {
             setPage(page - 1);
         }
     }
 
-    const handlePageChangeRight = async () => {
+    const handlePageChangeRight = () => {
         if (page + 1 <= totalPages) {
             setPage(page + 1);
         }
@@ -40,7 +43,7 @@ const PatientListComponent: NextPage<PatientListPage> = ({patients, nextPage, to
         setOpenModal(!isModalOpen);
     }
 
-    const createPatientForm = <CreatePatientModal />
+    const createPatientForm = <CreatePatientModal closeModal={toggleModal} />
 
     return (
         <div className='content-container'>

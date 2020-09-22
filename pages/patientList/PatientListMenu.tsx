@@ -1,4 +1,4 @@
-import React, { MouseEvent } from 'react'
+import React, { MouseEvent, useState } from 'react'
 import Link from 'next/link'
 
 // Styles
@@ -29,16 +29,25 @@ const PatientListMenu: React.FC<Props> = ({
     page,
     showModal
 }) => {
+    const [cpf, setCPF] = useState<string>('');
+
+    const handleChange = (e) => {
+        const value = e.target.value;
+
+        setCPF(value);
+    }
     return (
         <div className={styles.patient_list_menu_container}>
             <div className={styles.patient_list_menu}>
                 <div className={styles.search_container}>
-                    <FontAwesomeIcon
-                        icon={faSearch}
-                        size='xs'
-                        className={styles.search_icon}
-                    />
-                    <input placeholder='CPF' className={styles.search_field} />
+                    <Link href={`/patientByCPF/${cpf}.tsx`}>
+                        <FontAwesomeIcon
+                            icon={faSearch}
+                            size='xs'
+                            className={styles.search_icon}
+                        />
+                    </Link>
+                    <input onChange={handleChange} placeholder='CPF' className={styles.search_field} />
                 </div>
                 <div className={styles.menu_actions_container}>
                     <div onClick={showModal}>
