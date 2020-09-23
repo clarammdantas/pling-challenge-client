@@ -5,6 +5,7 @@ import Patient from '../../types/types'
 
 // Styles
 import styles from './modal.module.scss'
+import formStyle from './patientForm.module.scss'
 
 import fetch from 'isomorphic-unfetch'
 
@@ -62,61 +63,105 @@ class CreatePatientForm extends React.Component<{closeModal}, ModalState> {
     render() {
         return (
             <div className={styles.create_form_container}>
-                <h2>Novo Paciente</h2>
+                <span className={formStyle.title}><strong>Novo Paciente</strong></span>
                 <form onSubmit={this.handleSubmit}>
                     <div className={styles.create_form}>
-                        <label>
-                            Name:
-                            <input onChange={this.handleChange} type='text' name='name' value={this.state.patient.name} />
-                        </label>
-                        <label>
-                            Age:
-                            <input onChange={this.handleChange} type='number' name='age' value={this.state.patient.age} />
-                        </label>
-                        <label>
-                            Sexo:
-                            <input onChange={this.handleChange} type='number'
-                                name='sex' value={this.state.patient.sex} min='0' max='1'
-                                placeholder='1 - Mulher / 0 - Homem'/>
-                        </label>
-                        <label>
-                            CPF:
-                            <input onChange={this.handleChange} type='text' name='cpf'
-                                value={this.state.patient.cpf} placeholder='xxx.xxx.xxx-41' />
-                        </label>
-                        <label>
-                            Profissão:
-                            <input onChange={this.handleChange} type='text' name='profession' value={this.state.patient.profession} />
-                        </label>
-                        <label>
-                            Número:
-                            <input onChange={this.handleChange} type='text' name='cellNumber'
-                                value={this.state.patient.cellNumber} placeholder='(xx) xxxxx-xxxx'/>
-                        </label>
-                        <hr/ >
+                        <div className={formStyle.form_row}>
+                            <div className={formStyle.info_div}>
+                                <label>
+                                    Name:
+                                </label>
+                            </div>
+                            <input onChange={this.handleChange} className={formStyle.search_field}
+                                type='text' name='name' value={this.state.patient.name} />
+                        </div>
+                        <div className={formStyle.form_row}>
+                            <label>
+                                Age:
+                                <input onChange={this.handleChange} className={formStyle.search_field}
+                                    type='number' name='age' value={this.state.patient.age} />
+                            </label>
+                        </div>
 
-                        <h4>Endereço</h4>
-                        <label>
-                            Rua:
-                            <input onChange={this.handleChange} type='text' name='address_street' value={this.state.patient.address.street} />
-                        </label>
-                        <label>
-                            Número:
-                            <input onChange={this.handleChange} type='number' name='address_number' value={this.state.patient.address.number} />
-                        </label>
-                        <label>
-                            Bairro:
-                            <input onChange={this.handleChange} type='text' name='address_district' value={this.state.patient.address.district} />
-                        </label>
-                        <label>
-                            Cep:
-                            <input onChange={this.handleChange} type='text' name='address_zipCode' value={this.state.patient.address.zipCode} />
-                        </label>
-                        <label>
-                            Complemento:
-                            <input onChange={this.handleChange} type='text' name='address_complement' value={this.state.patient.address.complement} />
-                        </label>
-                        <input type='submit' value='Submit' />
+                        <div className={formStyle.form_row}>
+                            <label>
+                                Sexo:
+                                <input onChange={this.handleChange} type='number'
+                                    name='sex' value={this.state.patient.sex} min='0' max='1'
+                                    placeholder='1 - Mulher / 0 - Homem'
+                                    className={formStyle.search_field}/>
+                            </label>
+                        </div>
+
+                        <div className={formStyle.form_row}>
+                            <label>
+                                CPF:
+                                <input onChange={this.handleChange} type='text' name='cpf'
+                                    value={this.state.patient.cpf} placeholder='xxx.xxx.xxx-41'
+                                    className={formStyle.search_field}/>
+                            </label>
+                        </div>
+
+                        <div className={formStyle.form_row}>
+                            <label>
+                                Profissão:
+                                <input onChange={this.handleChange} className={formStyle.search_field}
+                                    type='text' name='profession' value={this.state.patient.profession} />
+                            </label>
+                        </div>
+
+                        <div className={formStyle.form_row}>
+                            <label>
+                                Número:
+                                <input onChange={this.handleChange} type='text' name='cellNumber'
+                                    value={this.state.patient.cellNumber} placeholder='(xx) xxxxx-xxxx'
+                                    className={formStyle.search_field} />
+                            </label>
+                        </div>
+
+                        <hr/ >
+                        <span className={formStyle.title}><strong>Endereço</strong></span>
+                        <div className={formStyle.form_row}>
+                            <label>
+                                Rua:
+                                <input onChange={this.handleChange} className={formStyle.search_field}
+                                type='text' name='address_street' value={this.state.patient.address.street} />
+                            </label>
+                        </div>
+
+                        <div className={formStyle.form_row}>
+                            <label>
+                                Número:
+                                <input onChange={this.handleChange} className={formStyle.search_field}
+                                    type='number' name='address_number' value={this.state.patient.address.number} />
+                            </label>
+                        </div>
+
+                        <div className={formStyle.form_row}>
+                            <label>
+                                Bairro:
+                                <input onChange={this.handleChange} className={formStyle.search_field}
+                                type='text' name='address_district' value={this.state.patient.address.district} />
+                            </label>
+                        </div>
+
+                        <div className={formStyle.form_row}>
+                            <label>
+                                Cep:
+                                <input onChange={this.handleChange} className={formStyle.search_field}
+                                    type='text' name='address_zipCode' value={this.state.patient.address.zipCode} />
+                            </label>
+                        </div>
+
+                        <div className={formStyle.form_row}>
+                            <label>
+                                Complemento:
+                                <input onChange={this.handleChange} className={formStyle.search_field}
+                                    type='text' name='address_complement' value={this.state.patient.address.complement} />
+                            </label>
+                        </div>
+
+                        <input className={formStyle.sub_button} type='submit' value='Submit' />
                     </div>
                 </form>
             </div>
