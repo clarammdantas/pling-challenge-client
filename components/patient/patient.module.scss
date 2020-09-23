@@ -2,7 +2,14 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 12rem;
+    margin-top: 3rem;
+}
+
+.menu_and_list {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .patient_card {
@@ -74,7 +81,15 @@
         margin-left: 1rem;
     }
 
+    .delete_button:hover {
+        cursor: pointer;
+    }
+
     .edit_button {
         color: #0fd992;
+    }
+
+    .edit_button:hover {
+        cursor: pointer;
     }
 }

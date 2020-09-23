@@ -1,23 +1,25 @@
-import PatientListComponent from '../components/Patient/PatientList'
-import { GetStaticProps } from 'next'
+import PatientListComponent from './patientList/[page]'
 
-export default function Home({patients}) {
+export default function Home({patients, totalPages}) {
     return (
-        <div className='content-container'>
-            <div className='main-content'>
-                <PatientListComponent patients={patients}/>
-            </div>
-        </div>
+        <PatientListComponent
+            patients={patients}
+            nextPage={1}
+            totalPages={totalPages} />
     )
 }
 
-export const getStaticProps: GetStaticProps = async () => {
-    const res = await fetch(process.env.baseURL + '/patient/list/1');
+export const getStaticProps = async () => {
+    const res = await fetch(process.env.baseURL + '/patient/list/1')
     const patients = await res.json();
+
+    const totalPagesReq = await fetch(process.env.baseURL + '/patient/getTotalPages')
+    const totalPages = await totalPagesReq.json();
 
     return {
         props: {
             patients: patients,
-        },
+            totalPages: totalPages.total_pages
+        }
     }
 }

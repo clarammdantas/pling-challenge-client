@@ -1,4 +1,7 @@
 import React from 'react'
+import Router from 'next/router'
+import Link from 'next/link'
+import fetch from 'isomorphic-unfetch'
 
 // Types
 import Patient from '../../types/types'
@@ -10,12 +13,33 @@ import styles from './patient.module.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrash, faEdit } from '@fortawesome/free-solid-svg-icons'
 
-interface PatientType {
+type ToggleModal = (patient?: Patient) => void;
+
+interface PatientCardProps {
     patient: Patient,
-    key: string
+    page: number,
+    key: string,
+    toggleEditModal: ToggleModal
 }
 
-const PatientCard: React.FC<PatientType> = ({ patient, key }) => {
+const PatientCard: React.FC<PatientCardProps> = ({
+    patient,
+    key,
+    page,
+    toggleEditModal
+}) => {
+    const deletePatient = async () => {
+        await fetch(process.env.baseURL + '/patient/delete/' + patient._id, {
+            method: 'DELETE'
+        });
+
+        Router.reload();
+    }
+
+    const setModal = () => {
+        toggleEditModal(patient);
+    }
+
     return(
         <div key={key} className={styles.patient_card}>
             <div className={styles.patient_avatar}>
@@ -45,18 +69,22 @@ const PatientCard: React.FC<PatientType> = ({ patient, key }) => {
 
             <div className={styles.patient_records}>
                 <div className={styles.patient_actions}>
-                    <FontAwesomeIcon
-                        icon={faEdit}
-                        size='2x'
-                        color='black'
-                        className={styles.edit_button}
-                    />
-                    <FontAwesomeIcon
-                        icon={faTrash}
-                        size='2x'
-                        color='black'
-                        className={styles.delete_button}
-                    />
+                    <div onClick={setModal}>
+                        <FontAwesomeIcon
+                            icon={faEdit}
+                            size='2x'
+                            className={styles.edit_button}
+                        />
+                    </div>
+                    <div onClick={deletePatient}>
+                        <Link href={`/patientList/${page}.tsx`}>
+                            <FontAwesomeIcon
+                                icon={faTrash}
+                                size='2x'
+                                className={styles.delete_button}
+                            />
+                        </Link>
+                    </div>
                 </div>
                 <a href=''>Ver fichas</a>
             </div>
